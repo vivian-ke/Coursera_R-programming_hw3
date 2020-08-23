@@ -1,0 +1,23 @@
+makeCacheMatrix<-function(x=matrix(),...){
+    m<-NULL
+    set<-function(y){
+        x<<-y #用<<-可以可以使起在赋值行为均在environment hierarchy上进行
+        m<<-NULL
+    }
+    get<-function() x
+    setM<-function(solve) m<<-solve
+    getM<-function() m
+    list(set=set,get=get,setM=setM,getM=getM)
+}
+
+cachemean<-function(x,...){
+    m<-x$getM()
+    if(!is.null(m)){
+        message("TO cached data")
+        return(m)
+    }
+    data<-x$get()
+    m<-slove(data,...)
+    x$setM(m)
+    m
+}
